@@ -14,17 +14,19 @@
     "commitlint": "commitlint --config commitlint.config.mjs -e -V"
   },
   "lint-staged": {
-    "*.{js,ts,jsx,tsx}": [
+    ".{js,ts,jsx,tsx}": [
       "prettier --write",
       "eslint --fix"
     ],
-    "*.{js,ts,tsx,css,scss,html}": [
+    ".{js,ts,tsx,css,scss,html}": [
       "prettier --write"
     ]
   },
   "dependencies": {
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
+    "sass": "^1.81.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.0",
