@@ -1,7 +1,10 @@
 import React, { FC, useState } from 'react'
 // import { useSearchParams } from 'react-router-dom'
-import styles from './List.module.scss'
+import styles from './Common.module.scss'
+import { Typography } from 'antd'
 import QuestionCard from '../../components/QuestionCard'
+import ListSearch from '../../components/ListSearch'
+import { useTitle } from 'ahooks/' //第三方
 const rawQuestionList = [
   {
     _id: 1,
@@ -15,7 +18,7 @@ const rawQuestionList = [
     _id: 2,
     title: '问卷2',
     isPublished: true,
-    isStar: false,
+    isStar: true,
     answerCount: 12,
     createdAt: '2022-11-21 13:23:23',
   },
@@ -39,12 +42,14 @@ const rawQuestionList = [
     _id: 5,
     title: '问卷5',
     isPublished: false,
-    isStar: false,
+    isStar: true,
     answerCount: 12,
     createdAt: '2022-03-01 13:23:23',
   },
 ]
+const { Title } = Typography
 const List: FC = () => {
+  useTitle('问卷-我的问卷')
   // const [searchParams] = useSearchParams()
   // console.log(searchParams.get('keyword'), 'keyword')
   const [questionList] = useState(rawQuestionList)
@@ -53,16 +58,20 @@ const List: FC = () => {
     <>
       <div className={styles.header}>
         <div className={styles.left}>
-          <h3>我的问卷</h3>
+          <Title level={3}>我的问卷</Title>
         </div>
-        <div className={styles.right}>（搜索）</div>
+        <div className={styles.right}>
+          <ListSearch />
+        </div>
       </div>
       <div className={styles.content}>
-        {questionList.map(item => {
-          return <QuestionCard key={item._id} {...item} />
-        })}
+        {/* 问卷列表 */}
+        {questionList.length > 0 &&
+          questionList.map(item => {
+            return <QuestionCard key={item._id} {...item} />
+          })}
       </div>
-      <div className={styles.footer}>list page footer</div>
+      <div className={styles.footer}>loadMore... 上滑加载更多</div>
     </>
   )
 }
