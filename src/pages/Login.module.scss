@@ -1,0 +1,8 @@
+.container {
+    height: calc(100vh - 64px - 71px);
+    background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
