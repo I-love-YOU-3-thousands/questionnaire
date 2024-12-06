@@ -1,12 +1,13 @@
 import React, { FC } from 'react'
+import useLoadQuestionData from '../../../hooks/useLoadQuestionData.ts'
 
 const Stat: FC = () => {
+  const { loading, data, error } = useLoadQuestionData()
   return (
-    <>
-      <div className="App">
-        <h1 style={{ backgroundColor: 'red', color: 'white' }}>问卷 FE</h1>
-      </div>
-    </>
+    <div>
+      <p>Stat page</p>
+      {loading ? <p>loading</p> : <p>{JSON.stringify(data)}</p>}
+    </div>
   )
 }
 

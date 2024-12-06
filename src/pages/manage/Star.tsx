@@ -1,40 +1,18 @@
 import React, { FC, useState } from 'react'
 // import { useSearchParams } from 'react-router-dom'
 import styles from './Common.module.scss'
-import { Empty, Typography } from 'antd'
+import { Empty, Typography, Spin, Pagination } from 'antd'
 import QuestionCard from '../../components/QuestionCard'
 import ListSearch from '../../components/ListSearch'
+import ListPage from '../../components/ListPage'
+import useLoadQuestionListData from '../../hooks/useLoadQuestionListData'
 import { useTitle } from 'ahooks/' //第三方
 const { Title } = Typography
-const rawQuestionList = [
-  {
-    _id: 1,
-    title: '问卷1',
-    isPublished: false,
-    isStar: true,
-    answerCount: 12,
-    createdAt: '2022-01-01 13:23:23',
-  },
-  {
-    _id: 2,
-    title: '问卷2',
-    isPublished: true,
-    isStar: true,
-    answerCount: 12,
-    createdAt: '2022-11-21 13:23:23',
-  },
-  {
-    _id: 3,
-    title: '问卷3',
-    isPublished: false,
-    isStar: true,
-    answerCount: 12,
-    createdAt: '2022-03-22 13:23:23',
-  },
-]
+
 const Star: FC = () => {
   useTitle('问卷-星标问卷')
-  const [questionList] = useState(rawQuestionList)
+  const { data = {}, loading } = useLoadQuestionListData({ isStar: true })
+  const { list = [], total = 0 } = data
   return (
     <>
       <div className={styles.header}>
@@ -47,13 +25,21 @@ const Star: FC = () => {
       </div>
       <div className={styles.content}>
         {/* 问卷列表 */}
-        {questionList.length === 0 && <Empty description="暂无数据" />}
-        {questionList.length > 0 &&
-          questionList.map(item => {
+        {loading && (
+          <div style={{ textAlign: 'center' }}>
+            <Spin></Spin>
+          </div>
+        )}
+
+        {!loading && list.length === 0 && <Empty description="暂无数据" />}
+        {list.length > 0 &&
+          list.map((item: any) => {
             return <QuestionCard key={item._id} {...item} />
           })}
       </div>
-      <div className={styles.footer}>分页</div>
+      <div className={styles.footer}>
+        <ListPage total={total} />
+      </div>
     </>
   )
 }

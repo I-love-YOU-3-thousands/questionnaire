@@ -1,11 +1,23 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Typography } from 'antd'
 import { MANAGE_INDEX_PATHNAME } from '../router'
 import styles from './Home.module.scss'
+// import '../_mock/index.ts'
+import axios from 'axios'
 const { Title, Paragraph } = Typography
 const Home: FC = () => {
   const nav = useNavigate()
+  useEffect(() => {
+    // fetch('/api/test')
+    //   .then(res => res.json())
+    //   .then(data => {
+    //     console.log(data, 'fetch data')
+    //   })
+    // mock.js只能劫持 XMLHttpRequest 不能劫持fetch
+    // axios内部使用XMLHttpRequest  API
+    axios('/api/test').then(res => console.log(res, 'axios res'))
+  }, [])
   // function clickHandler() {
   //   // nav('/login?b=20')
   //   nav({

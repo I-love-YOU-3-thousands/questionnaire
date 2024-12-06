@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect } from 'react'
 import type { ChangeEvent } from 'react'
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import { Input } from 'antd'
-import { LIST_SEARCH_PARA_KEY } from '../constant'
+import { LIST_SEARCH_PARAM_KEY } from '../constant'
 const { Search } = Input
 
 const ListSearch: FC = () => {
@@ -11,8 +11,8 @@ const ListSearch: FC = () => {
   const [searchParams] = useSearchParams()
   const [value, setValue] = useState('')
   useEffect(() => {
-    console.log(searchParams.get(LIST_SEARCH_PARA_KEY), 'searchParams')
-    const curVal = searchParams.get(LIST_SEARCH_PARA_KEY) || ''
+    console.log(searchParams.get(LIST_SEARCH_PARAM_KEY), 'searchParams')
+    const curVal = searchParams.get(LIST_SEARCH_PARAM_KEY) || ''
     setValue(curVal)
   }, [searchParams])
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
@@ -23,7 +23,7 @@ const ListSearch: FC = () => {
 
     nav({
       pathname,
-      search: `${LIST_SEARCH_PARA_KEY}=${value}`,
+      search: `${LIST_SEARCH_PARAM_KEY}=${value}`,
     })
   }
   return (
