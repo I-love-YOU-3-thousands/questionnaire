@@ -1,9 +1,11 @@
 import React, { FC } from 'react'
-import { Typography, Space, Form, Input, Button } from 'antd'
+import { Typography, Space, Form, Input, Button, message } from 'antd'
 import { UserAddOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { registerService } from '../services/user'
 import styles from './Register.module.scss'
 import { LOGIN_PATHNAME } from '../router'
+import { useRequest } from 'ahooks'
 const { Title } = Typography
 
 interface IValues {
@@ -14,9 +16,24 @@ interface IValues {
 }
 
 const Register: FC = () => {
+  const nav = useNavigate()
   function onFinish(values: IValues) {
-    console.log('Success:', values)
+    run(values)
   }
+  const { run } = useRequest(
+    async values => {
+      const { username, password, nickname } = values
+      const data = await registerService(username, password, nickname)
+      return data
+    },
+    {
+      manual: true,
+      onSuccess: res => {
+        message.success('注册成功')
+        nav(LOGIN_PATHNAME)
+      },
+    }
+  )
   return (
     <div className={styles.container}>
       <div>

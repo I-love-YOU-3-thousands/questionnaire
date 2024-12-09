@@ -40,13 +40,15 @@ export async function updateQuestionService(
   return data
 }
 
+// 复制单个问卷
 export async function duplicateQuestionService(id: number): Promise<ResDataType> {
   const url = `/api/question/duplicate/${id}`
   const data = (await axios.post(url)) as ResDataType
   return data
 }
+// 彻底删除多项问卷
 export async function deleteQuestionService(ids: number[]): Promise<ResDataType> {
   const url = `/api/question`
-  const data = (await axios.delete(url, { data: ids })) as ResDataType
+  const data = (await axios.delete(url, { data: { ids } })) as ResDataType
   return data
 }

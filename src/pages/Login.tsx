@@ -1,9 +1,12 @@
 import React, { FC, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { Typography, Space, Form, Input, Button, Checkbox } from 'antd'
+import { Link, useNavigate } from 'react-router-dom'
+import { Typography, Space, Form, Input, Button, Checkbox, message } from 'antd'
 import { UserAddOutlined } from '@ant-design/icons'
-import { REGISTER_PATHNAME } from '../router'
+import { loginService } from '../services/user'
+import { MANAGE_INDEX_PATHNAME, REGISTER_PATHNAME } from '../router'
 import styles from './Login.module.scss'
+import { useRequest } from 'ahooks'
+import { setToken } from '../utils/user-token'
 const { Title } = Typography
 interface IValues {
   username: string
@@ -13,6 +16,7 @@ interface IValues {
 const USERNAME_KEY = 'USERNAME'
 const PASSWORD_KEY = 'PASSWORD'
 const Login: FC = () => {
+  const nav = useNavigate()
   const [form] = Form.useForm()
   useEffect(() => {
     const { username, password } = getUserInfoFromStorage()
@@ -27,7 +31,23 @@ const Login: FC = () => {
     } else {
       deleteUserFromStorage()
     }
+    run(username, password)
   }
+  const { run } = useRequest(
+    async (username: string, password: string) => {
+      const data = await loginService(username, password)
+      return data
+    },
+    {
+      manual: true,
+      onSuccess: res => {
+        const { token = '' } = res
+        setToken(token)
+        message.success('登录成功')
+        nav(MANAGE_INDEX_PATHNAME)
+      },
+    }
+  )
   function rememberUser(username: string, password: string) {
     localStorage.setItem(USERNAME_KEY, username)
     localStorage.setItem(PASSWORD_KEY, password)
