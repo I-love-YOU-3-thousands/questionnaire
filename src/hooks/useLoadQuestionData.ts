@@ -5,6 +5,7 @@ import { useRequest } from 'ahooks'
 import { useDispatch } from 'react-redux'
 import { getQuestionService } from '../services/question'
 import { resetComponents } from '../store/componentsReducer/index'
+import { resetPageInfo } from '../store/pageInfoReducer'
 function useLoadQuestionData() {
   const { id = 0 } = useParams()
   const dispatch = useDispatch()
@@ -22,7 +23,7 @@ function useLoadQuestionData() {
 
   useEffect(() => {
     if (!data) return
-    const { componentList = [] } = data
+    const { title = '', desc = '', js = '', css = '', componentList = [] } = data
 
     // 获取默认的selectedId
     let selectedId = ''
@@ -32,6 +33,7 @@ function useLoadQuestionData() {
 
     // 把componentList 存入 store
     dispatch(resetComponents({ componentList, selectedId, copiedComponent: null }))
+    dispatch(resetPageInfo({ title, desc, js, css }))
   }, [data])
 
   useEffect(() => {

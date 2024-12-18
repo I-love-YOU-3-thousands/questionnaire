@@ -10,7 +10,13 @@ import {
 // 判断activeElement是否是body
 function isActiveElementValid() {
   const activeElem = document.activeElement
+
+  // 没有增加dnd-kit之前
+  // if (activeElem === document.body) return true
+
+  // 增加dnd-kit之后
   if (activeElem === document.body) return true
+  if (activeElem?.matches('div[role="button"]')) return true
   return false
 }
 function useBindCanvasKeyPress() {

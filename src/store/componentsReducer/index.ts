@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { produce } from 'immer'
 import cloneDeep from 'lodash.clonedeep'
 import { nanoid } from 'nanoid'
+import { arrayMove } from '@dnd-kit/sortable'
 import { ComponentPropsType } from '../../components/QuestionComponents'
 import { getNextSelectedId, insertNewComponent } from './utils'
 export type ComponentInfoType = {
@@ -145,6 +146,27 @@ const componentsSlice = createSlice({
       if (selectedIndex + 1 === componentList.length) return // 已经选择了最后一个,无法再向下
       draft.selectedId = componentList[selectedIndex + 1].fe_id
     }),
+
+    // 修改组件标题
+    changeComponentTitle: produce(
+      (draft: ComponentsStateType, action: PayloadAction<{ fe_id: string; title: string }>) => {
+        const { title, fe_id } = action.payload
+        const curComp = draft.componentList.find(c => c.fe_id === fe_id)
+        if (curComp) curComp.title = title
+      }
+    ),
+
+    // 拖拽移动位置
+    moveComponent: produce(
+      (
+        draft: ComponentsStateType,
+        action: PayloadAction<{ oldIndex: number; newIndex: number }>
+      ) => {
+        const { componentList: curComponentList } = draft
+        const { oldIndex, newIndex } = action.payload
+        draft.componentList = arrayMove(curComponentList, oldIndex, newIndex)
+      }
+    ),
   },
 })
 export const {
@@ -159,5 +181,7 @@ export const {
   pasteCopiedComponent,
   selectPrevComponent,
   selectNextComponent,
+  changeComponentTitle,
+  moveComponent,
 } = componentsSlice.actions
 export default componentsSlice.reducer
