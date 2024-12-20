@@ -23,7 +23,14 @@ function useLoadQuestionData() {
 
   useEffect(() => {
     if (!data) return
-    const { title = '', desc = '', js = '', css = '', componentList = [] } = data
+    const {
+      title = '',
+      desc = '',
+      js = '',
+      css = '',
+      isPublished = false,
+      componentList = [],
+    } = data
 
     // 获取默认的selectedId
     let selectedId = ''
@@ -33,7 +40,7 @@ function useLoadQuestionData() {
 
     // 把componentList 存入 store
     dispatch(resetComponents({ componentList, selectedId, copiedComponent: null }))
-    dispatch(resetPageInfo({ title, desc, js, css }))
+    dispatch(resetPageInfo({ title, desc, js, css, isPublished }))
   }, [data])
 
   useEffect(() => {

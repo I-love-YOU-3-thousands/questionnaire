@@ -1,5 +1,7 @@
 import React, { FC } from 'react'
 import { useDispatch } from 'react-redux'
+import { useTitle } from 'ahooks'
+import useGetPageInfo from '../../../hooks/useGetPageInfo.ts'
 import { changeSelectedId } from '../../../store/componentsReducer'
 import useLoadQuestionData from '../../../hooks/useLoadQuestionData.ts'
 import styles from './index.module.scss'
@@ -10,7 +12,9 @@ import RightPanel from './RightPanel.tsx'
 
 const Edit: FC = () => {
   const { loading } = useLoadQuestionData()
+  const { title } = useGetPageInfo()
   const dispatch = useDispatch()
+  useTitle(`问卷统计 - ${title}`)
   function clearSelectedId() {
     console.log('clearSelectedId')
     dispatch(changeSelectedId(''))
